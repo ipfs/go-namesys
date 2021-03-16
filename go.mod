@@ -12,7 +12,6 @@ require (
 	github.com/ipfs/go-ipns v0.0.2
 	github.com/ipfs/go-log v1.0.4
 	github.com/ipfs/go-path v0.0.9
-	github.com/ipfs/go-unixfs v0.2.4
 	github.com/ipfs/interface-go-ipfs-core v0.4.0
 	github.com/jbenet/go-is-domain v1.0.5
 	github.com/jbenet/goprocess v0.1.4
