@@ -8,7 +8,6 @@ require (
 	github.com/ipfs/go-datastore v0.4.5
 	github.com/ipfs/go-ipfs-ds-help v0.1.1
 	github.com/ipfs/go-ipfs-keystore v0.0.2
-	github.com/ipfs/go-ipfs-pinner v0.1.1
 	github.com/ipfs/go-ipfs-routing v0.1.0
 	github.com/ipfs/go-ipns v0.0.2
 	github.com/ipfs/go-log v1.0.4
