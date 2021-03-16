@@ -29,4 +29,4 @@ require (
 	github.com/whyrusleeping/base32 v0.0.0-20170828182744-c30ac30633cc
 )
 
-go 1.14
+go 1.15
