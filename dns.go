@@ -88,6 +88,7 @@ func (r *DNSResolver) resolveOnceAsync(ctx context.Context, name string, options
 
 	go func() {
 		defer close(out)
+		var rootResErr, subResErr error
 		for {
 			select {
 			case subRes, ok := <-subChan:
@@ -100,6 +101,7 @@ func (r *DNSResolver) resolveOnceAsync(ctx context.Context, name string, options
 					emitOnceResult(ctx, out, onceResult{value: p, err: err})
 					return
 				}
+				subResErr = subRes.error
 			case rootRes, ok := <-rootChan:
 				if !ok {
 					rootChan = nil
@@ -108,11 +110,26 @@ func (r *DNSResolver) resolveOnceAsync(ctx context.Context, name string, options
 				if rootRes.error == nil {
 					p, err := appendPath(rootRes.path)
 					emitOnceResult(ctx, out, onceResult{value: p, err: err})
+					return
 				}
+				rootResErr = rootRes.error
 			case <-ctx.Done():
 				return
 			}
 			if subChan == nil && rootChan == nil {
+				// If here, then both lookups failed
+				//
+				// If both lookup errors were due to no TXT records with a
+				// dnslink, then output a more specific error message
+				if rootResErr == ErrResolveFailed && subResErr == ErrResolveFailed {
+					i := len(name) - 1
+					for i >= 0 && name[i] != '/' {
+						i--
+					}
+					// Wrap error so that it can be tested if it is a ErrResolveFailed
+					err := fmt.Errorf("%w: %q is missing a DNSLink record (https://docs.ipfs.io/concepts/dnslink/)", ErrResolveFailed, name[i+1:])
+					emitOnceResult(ctx, out, onceResult{err: err})
+				}
 				return
 			}
 		}
@@ -126,7 +143,14 @@ func workDomain(r *DNSResolver, name string, res chan lookupRes) {
 
 	txt, err := r.lookupTXT(name)
 	if err != nil {
-		// Error is != nil
+		if dnsErr, ok := err.(*net.DNSError); ok {
+			// If no TXT records found, return same error as when no text
+			// records contain dnslink. Otherwise, return the actual error.
+			if dnsErr.IsNotFound {
+				err = ErrResolveFailed
+			}
+		}
+		// Could not look up any text records for name
 		res <- lookupRes{"", err}
 		return
 	}
@@ -138,6 +162,8 @@ func workDomain(r *DNSResolver, name string, res chan lookupRes) {
 			return
 		}
 	}
+
+	// There were no TXT records with a dnslink
 	res <- lookupRes{"", ErrResolveFailed}
 }
 
