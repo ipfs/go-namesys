@@ -13,7 +13,6 @@ require (
 	github.com/ipfs/go-log v1.0.4
 	github.com/ipfs/go-path v0.0.9
 	github.com/ipfs/interface-go-ipfs-core v0.4.0
-	github.com/jbenet/go-is-domain v1.0.5
 	github.com/jbenet/goprocess v0.1.4
 	github.com/libp2p/go-libp2p v0.13.0
 	github.com/libp2p/go-libp2p-core v0.8.0
@@ -21,6 +20,7 @@ require (
 	github.com/libp2p/go-libp2p-peerstore v0.2.6
 	github.com/libp2p/go-libp2p-record v0.1.3
 	github.com/libp2p/go-libp2p-testing v0.4.0
+	github.com/miekg/dns v1.1.41
 	github.com/multiformats/go-multiaddr v0.3.1
 	github.com/multiformats/go-multiaddr-dns v0.3.1
 	github.com/multiformats/go-multihash v0.0.14
