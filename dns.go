@@ -5,6 +5,7 @@ import (
 	"errors"
 	"fmt"
 	"net"
+	gpath "path"
 	"strings"
 
 	path "github.com/ipfs/go-path"
@@ -99,6 +100,8 @@ func (r *DNSResolver) resolveOnceAsync(ctx context.Context, name string, options
 				if subRes.error == nil {
 					p, err := appendPath(subRes.path)
 					emitOnceResult(ctx, out, onceResult{value: p, err: err})
+					// Return without waiting for rootRes, since this result
+					// (for "_dnslink."+fqdn) takes precedence
 					return
 				}
 				subResErr = subRes.error
@@ -110,24 +113,22 @@ func (r *DNSResolver) resolveOnceAsync(ctx context.Context, name string, options
 				if rootRes.error == nil {
 					p, err := appendPath(rootRes.path)
 					emitOnceResult(ctx, out, onceResult{value: p, err: err})
-					return
+					// Do not return here.  Wait for subRes so that it is
+					// output last if good, thereby giving subRes precedence.
+				} else {
+					rootResErr = rootRes.error
 				}
-				rootResErr = rootRes.error
 			case <-ctx.Done():
 				return
 			}
 			if subChan == nil && rootChan == nil {
-				// If here, then both lookups failed
+				// If here, then both lookups are done
 				//
-				// If both lookup errors were due to no TXT records with a
+				// If both lookups failed due to no TXT records with a
 				// dnslink, then output a more specific error message
 				if rootResErr == ErrResolveFailed && subResErr == ErrResolveFailed {
-					i := len(name) - 1
-					for i >= 0 && name[i] != '/' {
-						i--
-					}
 					// Wrap error so that it can be tested if it is a ErrResolveFailed
-					err := fmt.Errorf("%w: %q is missing a DNSLink record (https://docs.ipfs.io/concepts/dnslink/)", ErrResolveFailed, name[i+1:])
+					err := fmt.Errorf("%w: %q is missing a DNSLink record (https://docs.ipfs.io/concepts/dnslink/)", ErrResolveFailed, gpath.Base(name))
 					emitOnceResult(ctx, out, onceResult{err: err})
 				}
 				return
