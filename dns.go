@@ -8,7 +8,7 @@ import (
 
 	path "github.com/ipfs/go-path"
 	opts "github.com/ipfs/interface-go-ipfs-core/options/namesys"
-	isd "github.com/jbenet/go-is-domain"
+	dns "github.com/miekg/dns"
 )
 
 // LookupTXTFunc is a generic type for a function that lookups TXT record values.
@@ -50,7 +50,7 @@ func (r *DNSResolver) resolveOnceAsync(ctx context.Context, name string, options
 	segments := strings.SplitN(name, "/", 2)
 	domain := segments[0]
 
-	if !isd.IsDomain(domain) {
+	if _, ok := dns.IsDomainName(domain); !ok {
 		out <- onceResult{err: fmt.Errorf("not a valid domain name: %s", domain)}
 		close(out)
 		return out
