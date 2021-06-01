@@ -9,7 +9,6 @@ import (
 	"strings"
 
 	path "github.com/ipfs/go-path"
-	opts "github.com/ipfs/interface-go-ipfs-core/options/namesys"
 	dns "github.com/miekg/dns"
 )
 
@@ -29,13 +28,13 @@ func NewDNSResolver(lookup LookupTXTFunc) *DNSResolver {
 }
 
 // Resolve implements Resolver.
-func (r *DNSResolver) Resolve(ctx context.Context, name string, options ...opts.ResolveOpt) (path.Path, error) {
-	return resolve(ctx, r, name, opts.ProcessOpts(options))
+func (r *DNSResolver) Resolve(ctx context.Context, name string, options ...ResolveOpt) (path.Path, error) {
+	return resolve(ctx, r, name, ProcessOpts(options))
 }
 
 // ResolveAsync implements Resolver.
-func (r *DNSResolver) ResolveAsync(ctx context.Context, name string, options ...opts.ResolveOpt) <-chan Result {
-	return resolveAsync(ctx, r, name, opts.ProcessOpts(options))
+func (r *DNSResolver) ResolveAsync(ctx context.Context, name string, options ...ResolveOpt) <-chan Result {
+	return resolveAsync(ctx, r, name, ProcessOpts(options))
 }
 
 type lookupRes struct {
@@ -46,7 +45,7 @@ type lookupRes struct {
 // resolveOnce implements resolver.
 // TXT records for a given domain name should contain a b58
 // encoded multihash.
-func (r *DNSResolver) resolveOnceAsync(ctx context.Context, name string, options opts.ResolveOpts) <-chan onceResult {
+func (r *DNSResolver) resolveOnceAsync(ctx context.Context, name string, options ResolveOpts) <-chan onceResult {
 	var fqdn string
 	out := make(chan onceResult, 1)
 	segments := strings.SplitN(name, "/", 2)

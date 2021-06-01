@@ -36,7 +36,6 @@ import (
 	context "context"
 
 	path "github.com/ipfs/go-path"
-	opts "github.com/ipfs/interface-go-ipfs-core/options/namesys"
 	ci "github.com/libp2p/go-libp2p-core/crypto"
 )
 
@@ -85,12 +84,12 @@ type Resolver interface {
 	// There is a default depth-limit to avoid infinite recursion.  Most
 	// users will be fine with this default limit, but if you need to
 	// adjust the limit you can specify it as an option.
-	Resolve(ctx context.Context, name string, options ...opts.ResolveOpt) (value path.Path, err error)
+	Resolve(ctx context.Context, name string, options ...ResolveOpt) (value path.Path, err error)
 
 	// ResolveAsync performs recursive name lookup, like Resolve, but it returns
 	// entries as they are discovered in the DHT. Each returned result is guaranteed
 	// to be "better" (which usually means newer) than the previous one.
-	ResolveAsync(ctx context.Context, name string, options ...opts.ResolveOpt) <-chan Result
+	ResolveAsync(ctx context.Context, name string, options ...ResolveOpt) <-chan Result
 }
 
 // Publisher is an object capable of publishing particular names.

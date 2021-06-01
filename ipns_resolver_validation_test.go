@@ -12,7 +12,6 @@ import (
 	ipns "github.com/ipfs/go-ipns"
 	ipns_pb "github.com/ipfs/go-ipns/pb"
 	path "github.com/ipfs/go-path"
-	opts "github.com/ipfs/interface-go-ipfs-core/options/namesys"
 	ci "github.com/libp2p/go-libp2p-core/crypto"
 	peer "github.com/libp2p/go-libp2p-core/peer"
 	pstore "github.com/libp2p/go-libp2p-core/peerstore"
@@ -69,7 +68,7 @@ func testResolverValidation(t *testing.T, keyType int) {
 	}
 
 	// Resolve entry
-	resp, err := resolve(ctx, resolver, id.Pretty(), opts.DefaultResolveOpts())
+	resp, err := resolve(ctx, resolver, id.Pretty(), DefaultResolveOpts())
 	if err != nil {
 		t.Fatal(err)
 	}
@@ -89,7 +88,7 @@ func testResolverValidation(t *testing.T, keyType int) {
 	}
 
 	// Record should fail validation because entry is expired
-	_, err = resolve(ctx, resolver, id.Pretty(), opts.DefaultResolveOpts())
+	_, err = resolve(ctx, resolver, id.Pretty(), DefaultResolveOpts())
 	if err == nil {
 		t.Fatal("ValidateIpnsRecord should have returned error")
 	}
@@ -105,7 +104,7 @@ func testResolverValidation(t *testing.T, keyType int) {
 
 	// Record should fail validation because public key defined by
 	// ipns path doesn't match record signature
-	_, err = resolve(ctx, resolver, id2.Pretty(), opts.DefaultResolveOpts())
+	_, err = resolve(ctx, resolver, id2.Pretty(), DefaultResolveOpts())
 	if err == nil {
 		t.Fatal("ValidateIpnsRecord should have failed signature verification")
 	}
@@ -123,7 +122,7 @@ func testResolverValidation(t *testing.T, keyType int) {
 
 	// Record should fail validation because public key defined by
 	// ipns path doesn't match record signature
-	_, err = resolve(ctx, resolver, id2.Pretty(), opts.DefaultResolveOpts())
+	_, err = resolve(ctx, resolver, id2.Pretty(), DefaultResolveOpts())
 	if err == nil {
 		t.Fatal("ValidateIpnsRecord should have failed signature verification")
 	}

@@ -24,7 +24,6 @@ import (
 	ds "github.com/ipfs/go-datastore"
 	dssync "github.com/ipfs/go-datastore/sync"
 	path "github.com/ipfs/go-path"
-	opts "github.com/ipfs/interface-go-ipfs-core/options/namesys"
 	ci "github.com/libp2p/go-libp2p-core/crypto"
 	peer "github.com/libp2p/go-libp2p-core/peer"
 	routing "github.com/libp2p/go-libp2p-core/routing"
@@ -133,7 +132,7 @@ func NewNameSystem(r routing.ValueStore, opts ...Option) (NameSystem, error) {
 const DefaultResolverCacheTTL = time.Minute
 
 // Resolve implements Resolver.
-func (ns *mpns) Resolve(ctx context.Context, name string, options ...opts.ResolveOpt) (path.Path, error) {
+func (ns *mpns) Resolve(ctx context.Context, name string, options ...ResolveOpt) (path.Path, error) {
 	if strings.HasPrefix(name, "/ipfs/") {
 		return path.ParsePath(name)
 	}
@@ -142,10 +141,10 @@ func (ns *mpns) Resolve(ctx context.Context, name string, options ...opts.Resolv
 		return path.ParsePath("/ipfs/" + name)
 	}
 
-	return resolve(ctx, ns, name, opts.ProcessOpts(options))
+	return resolve(ctx, ns, name, ProcessOpts(options))
 }
 
-func (ns *mpns) ResolveAsync(ctx context.Context, name string, options ...opts.ResolveOpt) <-chan Result {
+func (ns *mpns) ResolveAsync(ctx context.Context, name string, options ...ResolveOpt) <-chan Result {
 	if strings.HasPrefix(name, "/ipfs/") {
 		p, err := path.ParsePath(name)
 		res := make(chan Result, 1)
@@ -162,11 +161,11 @@ func (ns *mpns) ResolveAsync(ctx context.Context, name string, options ...opts.R
 		return res
 	}
 
-	return resolveAsync(ctx, ns, name, opts.ProcessOpts(options))
+	return resolveAsync(ctx, ns, name, ProcessOpts(options))
 }
 
 // resolveOnce implements resolver.
-func (ns *mpns) resolveOnceAsync(ctx context.Context, name string, options opts.ResolveOpts) <-chan onceResult {
+func (ns *mpns) resolveOnceAsync(ctx context.Context, name string, options ResolveOpts) <-chan onceResult {
 	out := make(chan onceResult, 1)
 
 	if !strings.HasPrefix(name, ipnsPrefix) {

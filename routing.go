@@ -11,7 +11,6 @@ import (
 	pb "github.com/ipfs/go-ipns/pb"
 	logging "github.com/ipfs/go-log"
 	path "github.com/ipfs/go-path"
-	opts "github.com/ipfs/interface-go-ipfs-core/options/namesys"
 	peer "github.com/libp2p/go-libp2p-core/peer"
 	routing "github.com/libp2p/go-libp2p-core/routing"
 	dht "github.com/libp2p/go-libp2p-kad-dht"
@@ -37,18 +36,18 @@ func NewIpnsResolver(route routing.ValueStore) *IpnsResolver {
 }
 
 // Resolve implements Resolver.
-func (r *IpnsResolver) Resolve(ctx context.Context, name string, options ...opts.ResolveOpt) (path.Path, error) {
-	return resolve(ctx, r, name, opts.ProcessOpts(options))
+func (r *IpnsResolver) Resolve(ctx context.Context, name string, options ...ResolveOpt) (path.Path, error) {
+	return resolve(ctx, r, name, ProcessOpts(options))
 }
 
 // ResolveAsync implements Resolver.
-func (r *IpnsResolver) ResolveAsync(ctx context.Context, name string, options ...opts.ResolveOpt) <-chan Result {
-	return resolveAsync(ctx, r, name, opts.ProcessOpts(options))
+func (r *IpnsResolver) ResolveAsync(ctx context.Context, name string, options ...ResolveOpt) <-chan Result {
+	return resolveAsync(ctx, r, name, ProcessOpts(options))
 }
 
 // resolveOnce implements resolver. Uses the IPFS routing system to
 // resolve SFS-like names.
-func (r *IpnsResolver) resolveOnceAsync(ctx context.Context, name string, options opts.ResolveOpts) <-chan onceResult {
+func (r *IpnsResolver) resolveOnceAsync(ctx context.Context, name string, options ResolveOpts) <-chan onceResult {
 	out := make(chan onceResult, 1)
 	log.Debugf("RoutingResolver resolving %s", name)
 	cancel := func() {}

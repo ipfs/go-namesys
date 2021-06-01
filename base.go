@@ -6,7 +6,6 @@ import (
 	"time"
 
 	path "github.com/ipfs/go-path"
-	opts "github.com/ipfs/interface-go-ipfs-core/options/namesys"
 )
 
 type onceResult struct {
@@ -16,11 +15,11 @@ type onceResult struct {
 }
 
 type resolver interface {
-	resolveOnceAsync(ctx context.Context, name string, options opts.ResolveOpts) <-chan onceResult
+	resolveOnceAsync(ctx context.Context, name string, options ResolveOpts) <-chan onceResult
 }
 
 // resolve is a helper for implementing Resolver.ResolveN using resolveOnce.
-func resolve(ctx context.Context, r resolver, name string, options opts.ResolveOpts) (path.Path, error) {
+func resolve(ctx context.Context, r resolver, name string, options ResolveOpts) (path.Path, error) {
 	ctx, cancel := context.WithCancel(ctx)
 	defer cancel()
 
@@ -39,7 +38,7 @@ func resolve(ctx context.Context, r resolver, name string, options opts.ResolveO
 	return p, err
 }
 
-func resolveAsync(ctx context.Context, r resolver, name string, options opts.ResolveOpts) <-chan Result {
+func resolveAsync(ctx context.Context, r resolver, name string, options ResolveOpts) <-chan Result {
 	resCh := r.resolveOnceAsync(ctx, name, options)
 	depth := options.Depth
 	outCh := make(chan Result, 1)

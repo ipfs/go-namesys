@@ -11,7 +11,6 @@ require (
 	github.com/ipfs/go-ipns v0.1.0
 	github.com/ipfs/go-log v1.0.4
 	github.com/ipfs/go-path v0.0.9
-	github.com/ipfs/interface-go-ipfs-core v0.4.0
 	github.com/jbenet/goprocess v0.1.4
 	github.com/libp2p/go-libp2p v0.13.0
 	github.com/libp2p/go-libp2p-core v0.8.0
