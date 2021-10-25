@@ -42,7 +42,6 @@ func getMockNode(t *testing.T, ctx context.Context) *mockNode {
 	dstore := dssync.MutexWrap(ds.NewMapDatastore())
 	var idht *dht.IpfsDHT
 	h, err := libp2p.New(
-		ctx,
 		libp2p.ListenAddrStrings("/ip4/127.0.0.1/tcp/0"),
 		libp2p.Routing(func(h host.Host) (routing.PeerRouting, error) {
 			rt, err := dht.New(ctx, h, dht.Mode(dht.ModeServer))
@@ -53,7 +52,6 @@ func getMockNode(t *testing.T, ctx context.Context) *mockNode {
 	if err != nil {
 		t.Fatal(err)
 	}
-
 	return &mockNode{
 		h:        h,
 		id:       h.ID().Pretty(),
@@ -74,6 +72,7 @@ func TestRepublish(t *testing.T) {
 	var nodes []*mockNode
 	for i := 0; i < 10; i++ {
 		n := getMockNode(t, ctx)
+		defer n.h.Close()
 		ns, err := namesys.NewNameSystem(n.dht, namesys.WithDatastore(n.store))
 		if err != nil {
 			t.Fatal(err)
@@ -156,6 +155,7 @@ func TestLongEOLRepublish(t *testing.T) {
 	var nodes []*mockNode
 	for i := 0; i < 10; i++ {
 		n := getMockNode(t, ctx)
+		defer n.h.Close()
 		ns, err := namesys.NewNameSystem(n.dht, namesys.WithDatastore(n.store))
 		if err != nil {
 			t.Fatal(err)
@@ -208,7 +208,7 @@ func TestLongEOLRepublish(t *testing.T) {
 		t.Fatal(err)
 	}
 
-	entry, err := getLastIPNSEntry(publisher.store, publisher.h.ID())
+	entry, err := getLastIPNSEntry(ctx, publisher.store, publisher.h.ID())
 	if err != nil {
 		t.Fatal(err)
 	}
@@ -223,9 +223,9 @@ func TestLongEOLRepublish(t *testing.T) {
 	}
 }
 
-func getLastIPNSEntry(dstore ds.Datastore, id peer.ID) (*ipns_pb.IpnsEntry, error) {
+func getLastIPNSEntry(ctx context.Context, dstore ds.Datastore, id peer.ID) (*ipns_pb.IpnsEntry, error) {
 	// Look for it locally only
-	val, err := dstore.Get(namesys.IpnsDsKey(id))
+	val, err := dstore.Get(ctx, namesys.IpnsDsKey(id))
 	if err != nil {
 		return nil, err
 	}
