@@ -24,6 +24,7 @@ require (
 	github.com/multiformats/go-multiaddr-dns v0.3.1
 	github.com/multiformats/go-multihash v0.0.15
 	github.com/whyrusleeping/base32 v0.0.0-20170828182744-c30ac30633cc
+	go.uber.org/multierr v1.7.0
 )
 
 go 1.16
