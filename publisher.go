@@ -294,8 +294,8 @@ func PutRecordToRoutingMany(ctx context.Context, r routing.ValueStore, entries [
 		}
 	}
 
-	keysEntry, dataEntry, errEntry := preparePublishEntryMany(ipnsPublishEntries[:ipnsGood])
-	keysPubkey, dataPubkey, errPubkey := preparePublishPublicKeyMany(pubkeyPublishEntries[:pubkeyGood])
+	keysPubkey, dataPubkey, errPubkey := preparePublishPublicKeyMany(pubkeyPublishEntries[:pubkeyGood], 0)
+	keysEntry, dataEntry, errEntry := preparePublishEntryMany(ipnsPublishEntries[:ipnsGood], uint(len(keysPubkey)))
 
 	return multierr.Combine(
 		append(errors, errEntry, errPubkey,
@@ -317,16 +317,18 @@ type PublishPublicKeyManyEntry struct {
 
 // PublishPublicKeyMany is similar to PublishPublicKey but it accepts many key + pubkey pairs
 func PublishPublicKeyMany(ctx context.Context, r routing.ValueStore, entries []PublishPublicKeyManyEntry) error {
-	keys, data, err := preparePublishPublicKeyMany(entries)
+	keys, data, err := preparePublishPublicKeyMany(entries, 0)
 	return multierr.Append(err, execPut(ctx, r, keys, data))
 }
 
 // preparePublishPublicKeyMany prepare arguments for execPut, this is usefull
 // because that allows to bundle many different prepared payloads into a single PutMany
-func preparePublishPublicKeyMany(entries []PublishPublicKeyManyEntry) ([]string, [][]byte, error) {
+// extraHint adds extra capacity to the slices returned, this is usefull if you
+// plan to append more stuff to them and skip an allocation there.
+func preparePublishPublicKeyMany(entries []PublishPublicKeyManyEntry, extraHint uint) ([]string, [][]byte, error) {
 	var err error
 	var errors []error
-	l := len(entries)
+	l := uint64(len(entries)) + uint64(extraHint)
 	good := 0
 	data := make([][]byte, l)
 	keys := make([]string, l)
@@ -364,16 +366,18 @@ type PublishEntryManyItem struct {
 
 // PublishEntryMany is similar to PublishEntry but accepts many key + entry pairs
 func PublishEntryMany(ctx context.Context, r routing.ValueStore, entries []PublishEntryManyItem) error {
-	keys, data, err := preparePublishEntryMany(entries)
+	keys, data, err := preparePublishEntryMany(entries, 0)
 	return multierr.Append(err, execPut(ctx, r, keys, data))
 }
 
 // preparePublishEntryMany prepare arguments for execPut, this is usefull
 // because that allows to bundle many different prepared payloads into a single PutMany
-func preparePublishEntryMany(entries []PublishEntryManyItem) ([]string, [][]byte, error) {
+// extraHint adds extra capacity to the slices returned, this is usefull if you
+// plan to append more stuff to them and skip an allocation there.
+func preparePublishEntryMany(entries []PublishEntryManyItem, extraHint uint) ([]string, [][]byte, error) {
 	var err error
 	var errors []error
-	l := len(entries)
+	l := uint64(len(entries)) + uint64(extraHint)
 	good := 0
 	data := make([][]byte, l)
 	keys := make([]string, l)
