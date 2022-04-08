@@ -49,7 +49,7 @@ func resolveAsync(ctx context.Context, r resolver, name string, options opts.Res
 
 	go func() {
 		defer close(outCh)
-		ctx, span := StartSpan(ctx, "Namesys.ResolveAsync.Worker")
+		ctx, span := StartSpan(ctx, "ResolveAsync.Worker")
 		defer span.End()
 
 		var subCh <-chan Result

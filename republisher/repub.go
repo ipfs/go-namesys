@@ -94,7 +94,7 @@ func (rp *Republisher) Run(proc goprocess.Process) {
 func (rp *Republisher) republishEntries(p goprocess.Process) error {
 	ctx, cancel := context.WithCancel(gpctx.OnClosingContext(p))
 	defer cancel()
-	ctx, span := namesys.StartSpan(ctx, "RepublishEntries")
+	ctx, span := namesys.StartSpan(ctx, "Republisher.RepublishEntries")
 	defer span.End()
 
 	// TODO: Use rp.ipns.ListPublished(). We can't currently *do* that
@@ -128,7 +128,7 @@ func (rp *Republisher) republishEntries(p goprocess.Process) error {
 }
 
 func (rp *Republisher) republishEntry(ctx context.Context, priv ic.PrivKey) error {
-	ctx, span := namesys.StartSpan(ctx, "RepublishEntry")
+	ctx, span := namesys.StartSpan(ctx, "Republisher.RepublishEntry")
 	defer span.End()
 	id, err := peer.IDFromPrivateKey(priv)
 	if err != nil {

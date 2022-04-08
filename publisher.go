@@ -221,7 +221,7 @@ func checkCtxTTL(ctx context.Context) (time.Duration, bool) {
 // keyed on the ID associated with the provided public key. The public key is
 // also made available to the routing system so that entries can be verified.
 func PutRecordToRouting(ctx context.Context, r routing.ValueStore, k crypto.PubKey, entry *pb.IpnsEntry) error {
-	ctx, span := StartSpan(ctx, "IpnsPublisher.PutRecordToRouting")
+	ctx, span := StartSpan(ctx, "PutRecordToRouting")
 	defer span.End()
 
 	ctx, cancel := context.WithCancel(ctx)
