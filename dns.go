@@ -7,6 +7,7 @@ import (
 	"net"
 	gpath "path"
 	"strings"
+	"time"
 
 	path "github.com/ipfs/go-path"
 	opts "github.com/ipfs/interface-go-ipfs-core/options/namesys"
@@ -33,6 +34,15 @@ func NewDNSResolver(lookup LookupTXTFunc) *DNSResolver {
 // Resolve implements Resolver.
 func (r *DNSResolver) Resolve(ctx context.Context, name string, options ...opts.ResolveOpt) (path.Path, error) {
 	ctx, span := StartSpan(ctx, "DNSResolver.Resolve")
+	defer span.End()
+
+	p, _, err := resolve(ctx, r, name, opts.ProcessOpts(options))
+	return p, err
+}
+
+// ResolveWithTTL implements Resolver.
+func (r *DNSResolver) ResolveWithTTL(ctx context.Context, name string, options ...opts.ResolveOpt) (path.Path, time.Duration, error) {
+	ctx, span := StartSpan(ctx, "DNSResolver.ResolveWithTTL")
 	defer span.End()
 
 	return resolve(ctx, r, name, opts.ProcessOpts(options))

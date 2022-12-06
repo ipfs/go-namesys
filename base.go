@@ -20,23 +20,26 @@ type resolver interface {
 }
 
 // resolve is a helper for implementing Resolver.ResolveN using resolveOnce.
-func resolve(ctx context.Context, r resolver, name string, options opts.ResolveOpts) (path.Path, error) {
+func resolve(ctx context.Context, r resolver, name string, options opts.ResolveOpts) (path.Path, time.Duration, error) {
 	ctx, cancel := context.WithCancel(ctx)
 	defer cancel()
 
 	err := ErrResolveFailed
-	var p path.Path
+	var (
+		p   path.Path
+		ttl time.Duration
+	)
 
 	resCh := resolveAsync(ctx, r, name, options)
 
 	for res := range resCh {
-		p, err = res.Path, res.Err
+		p, ttl, err = res.Path, res.TTL, res.Err
 		if err != nil {
 			break
 		}
 	}
 
-	return p, err
+	return p, ttl, err
 }
 
 func resolveAsync(ctx context.Context, r resolver, name string, options opts.ResolveOpts) <-chan Result {
@@ -74,12 +77,12 @@ func resolveAsync(ctx context.Context, r resolver, name string, options opts.Res
 				}
 				log.Debugf("resolved %s to %s", name, res.value.String())
 				if !strings.HasPrefix(res.value.String(), ipnsPrefix) {
-					emitResult(ctx, outCh, Result{Path: res.value})
+					emitResult(ctx, outCh, Result{Path: res.value, TTL: res.ttl})
 					break
 				}
 
 				if depth == 1 {
-					emitResult(ctx, outCh, Result{Path: res.value, Err: ErrResolveRecursion})
+					emitResult(ctx, outCh, Result{Path: res.value, TTL: res.ttl, Err: ErrResolveRecursion})
 					break
 				}
 

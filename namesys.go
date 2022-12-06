@@ -41,7 +41,6 @@ import (
 // (b) dns domains: resolves using links in DNS TXT records
 //
 // It can only publish to: (a) IPFS routing naming.
-//
 type mpns struct {
 	ds ds.Datastore
 
@@ -147,6 +146,25 @@ func (ns *mpns) Resolve(ctx context.Context, name string, options ...opts.Resolv
 		return path.ParsePath("/ipfs/" + name)
 	}
 
+	p, _, err := resolve(ctx, ns, name, opts.ProcessOpts(options))
+	return p, err
+}
+
+// ResolveWithTTL implements Resolver.
+func (ns *mpns) ResolveWithTTL(ctx context.Context, name string, options ...opts.ResolveOpt) (path.Path, time.Duration, error) {
+	ctx, span := StartSpan(ctx, "MPNS.Resolve", trace.WithAttributes(attribute.String("Name", name)))
+	defer span.End()
+
+	if strings.HasPrefix(name, "/ipfs/") {
+		p, err := path.ParsePath(name)
+		return p, -1, err
+	}
+
+	if !strings.HasPrefix(name, "/") {
+		p, err := path.ParsePath("/ipfs/" + name)
+		return p, -1, err
+	}
+
 	return resolve(ctx, ns, name, opts.ProcessOpts(options))
 }
 
@@ -157,7 +175,7 @@ func (ns *mpns) ResolveAsync(ctx context.Context, name string, options ...opts.R
 	if strings.HasPrefix(name, "/ipfs/") {
 		p, err := path.ParsePath(name)
 		res := make(chan Result, 1)
-		res <- Result{p, err}
+		res <- Result{p, -1, err}
 		close(res)
 		return res
 	}
@@ -165,7 +183,7 @@ func (ns *mpns) ResolveAsync(ctx context.Context, name string, options ...opts.R
 	if !strings.HasPrefix(name, "/") {
 		p, err := path.ParsePath("/ipfs/" + name)
 		res := make(chan Result, 1)
-		res <- Result{p, err}
+		res <- Result{p, -1, err}
 		close(res)
 		return res
 	}

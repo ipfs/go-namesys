@@ -42,6 +42,14 @@ func NewIpnsResolver(route routing.ValueStore) *IpnsResolver {
 func (r *IpnsResolver) Resolve(ctx context.Context, name string, options ...opts.ResolveOpt) (path.Path, error) {
 	ctx, span := StartSpan(ctx, "IpnsResolver.Resolve", trace.WithAttributes(attribute.String("Name", name)))
 	defer span.End()
+	p, _, err := resolve(ctx, r, name, opts.ProcessOpts(options))
+	return p, err
+}
+
+// ResolveWithTTL implements Resolver.
+func (r *IpnsResolver) ResolveWithTTL(ctx context.Context, name string, options ...opts.ResolveOpt) (path.Path, time.Duration, error) {
+	ctx, span := StartSpan(ctx, "IpnsResolver.Resolve", trace.WithAttributes(attribute.String("Name", name)))
+	defer span.End()
 	return resolve(ctx, r, name, opts.ProcessOpts(options))
 }
 
