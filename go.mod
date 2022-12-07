@@ -8,17 +8,17 @@ require (
 	github.com/ipfs/go-ipfs-ds-help v1.1.0
 	github.com/ipfs/go-ipfs-keystore v0.1.0
 	github.com/ipfs/go-ipfs-routing v0.3.0
-	github.com/ipfs/go-ipns v0.2.0
+	github.com/ipfs/go-ipns v0.3.0
 	github.com/ipfs/go-log v1.0.5
 	github.com/ipfs/go-path v0.1.1
-	github.com/ipfs/interface-go-ipfs-core v0.8.0
+	github.com/ipfs/interface-go-ipfs-core v0.8.3-0.20230124085856-8e5d734998e2
 	github.com/jbenet/goprocess v0.1.4
 	github.com/libp2p/go-libp2p v0.23.4
 	github.com/libp2p/go-libp2p-kad-dht v0.19.0
 	github.com/libp2p/go-libp2p-record v0.2.0
 	github.com/libp2p/go-libp2p-testing v0.12.0
 	github.com/miekg/dns v1.1.50
-	github.com/multiformats/go-multiaddr v0.7.0
+	github.com/multiformats/go-multiaddr v0.8.0
 	github.com/multiformats/go-multiaddr-dns v0.3.1
 	github.com/multiformats/go-multihash v0.2.1
 	github.com/whyrusleeping/base32 v0.0.0-20170828182744-c30ac30633cc
@@ -103,6 +103,7 @@ require (
 	github.com/raulk/go-watchdog v1.3.0 // indirect
 	github.com/spacemonkeygo/spacelog v0.0.0-20180420211403-2296661a0572 // indirect
 	github.com/spaolacci/murmur3 v1.1.0 // indirect
+	github.com/stretchr/testify v1.8.1 // indirect
 	github.com/whyrusleeping/go-keyspace v0.0.0-20160322163242-5b898ac5add1 // indirect
 	go.opencensus.io v0.23.0 // indirect
 	go.uber.org/atomic v1.10.0 // indirect
