@@ -215,7 +215,7 @@ func (ns *mpns) resolveOnceAsync(ctx context.Context, name string, options opts.
 
 	cacheKey := key
 	if err == nil {
-		cacheKey = string(ipnsKey)
+		cacheKey = ipnsKey.String()
 	}
 
 	if p, ok := ns.cacheGet(cacheKey); ok {
