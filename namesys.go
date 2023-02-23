@@ -94,6 +94,12 @@ func loadStaticMap(list string) (map[string]path.Path, error) {
 		mapping := strings.SplitN(pair, ":", 2)
 		key := mapping[0]
 		value := path.FromString(mapping[1])
+
+		ipnsKey, err := peer.Decode(key)
+		if err == nil {
+			key = iface.FormatKeyID(ipnsKey)
+		}
+
 		staticMap[key] = value
 	}
 	return staticMap, nil
@@ -108,7 +114,12 @@ func NewNameSystem(r routing.ValueStore, opts ...Option) (NameSystem, error) {
 	// Example:
 	// IPFS_NS_MAP="dnslink-test.example.com:/ipfs/bafkreicysg23kiwv34eg2d7qweipxwosdo2py4ldv42nbauguluen5v6am"
 	if list := os.Getenv("IPFS_NS_MAP"); list != "" {
-		loadStaticMap(list)
+		var err error
+		staticMap, err = loadStaticMap(list)
+
+		if err != nil {
+			return nil, err
+		}
 	}
 
 	ns := &mpns{
