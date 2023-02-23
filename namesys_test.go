@@ -88,6 +88,26 @@ func TestNamesysResolution(t *testing.T) {
 	testResolution(t, r, "/ipns/bafzbeickencdqw37dpz3ha36ewrh4undfjt2do52chtcky4rxkj447qhdm", 1, "/ipns/QmbCMUZw6JFeZ7Wp9jkzbye3Fzp2GGcPgC3nmeUjfVF87n", ErrResolveRecursion)
 }
 
+func TestNamesysResolutionWithCache(t *testing.T) {
+	nsMap := "dnslink-test.example.com:/ipfs/bafyaaeykceeaeeqlgiydemzngazc2mrtbimaw,k51qzi5uqu5dlnojhwrggtpty9c0cp5hvnkdozowth4eqb726jvoros8k9niyu:/ipfs/bafyaagakcyeaeeqqgiydemzngazc2mrtfvuxa3ttbimba"
+
+	staticMap, err := loadStaticMap(nsMap)
+	if err != nil {
+		t.Fatal(err)
+	}
+
+	r := &mpns{
+		ipnsResolver: mockResolverOne(),
+		dnsResolver:  mockResolverTwo(),
+		staticMap:    staticMap,
+	}
+
+	testResolution(t, r, "/ipns/dnslink-test.example.com", opts.DefaultDepthLimit, "/ipfs/bafyaaeykceeaeeqlgiydemzngazc2mrtbimaw", nil)
+	testResolution(t, r, "/ipns/bafzaajaiaejcbw5i6oyqsktsn36r2vxgl2jzosyao46rybqztxt4rx4tfa3hpogg", opts.DefaultDepthLimit, "/ipfs/bafyaagakcyeaeeqqgiydemzngazc2mrtfvuxa3ttbimba", nil)
+	testResolution(t, r, "/ipns/k51qzi5uqu5dlnojhwrggtpty9c0cp5hvnkdozowth4eqb726jvoros8k9niyu", opts.DefaultDepthLimit, "/ipfs/bafyaagakcyeaeeqqgiydemzngazc2mrtfvuxa3ttbimba", nil)
+	testResolution(t, r, "/ipns/12D3KooWQbpsnyzdBcxw6GUMbijV8WgXE4L8EtfnbcQWLfyxBKho", opts.DefaultDepthLimit, "/ipfs/bafyaagakcyeaeeqqgiydemzngazc2mrtfvuxa3ttbimba", nil)
+}
+
 func TestPublishWithCache0(t *testing.T) {
 	dst := dssync.MutexWrap(ds.NewMapDatastore())
 	priv, _, err := ci.GenerateKeyPair(ci.RSA, 2048)
