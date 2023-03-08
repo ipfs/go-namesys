@@ -32,6 +32,7 @@ require (
 	github.com/cespare/xxhash/v2 v2.2.0 // indirect
 	github.com/containerd/cgroups v1.1.0 // indirect
 	github.com/coreos/go-systemd/v22 v22.5.0 // indirect
+	github.com/crackcomm/go-gitignore v0.0.0-20170627025303-887ab5e44cc3 // indirect
 	github.com/davidlazar/go-crypto v0.0.0-20200604182044-b73af7476f6c // indirect
 	github.com/decred/dcrd/dcrec/secp256k1/v4 v4.1.0 // indirect
 	github.com/docker/go-units v0.5.0 // indirect
@@ -50,9 +51,22 @@ require (
 	github.com/hashicorp/errwrap v1.1.0 // indirect
 	github.com/hashicorp/go-multierror v1.1.1 // indirect
 	github.com/huin/goupnp v1.1.0 // indirect
+	github.com/ipfs/bbloom v0.0.4 // indirect
+	github.com/ipfs/go-block-format v0.0.3 // indirect
+	github.com/ipfs/go-blockservice v0.3.0 // indirect
+	github.com/ipfs/go-ipfs-blockstore v1.2.0 // indirect
 	github.com/ipfs/go-ipfs-delay v0.0.1 // indirect
+	github.com/ipfs/go-ipfs-exchange-interface v0.1.0 // indirect
 	github.com/ipfs/go-ipfs-util v0.0.2 // indirect
+	github.com/ipfs/go-ipld-cbor v0.0.5 // indirect
+	github.com/ipfs/go-ipld-format v0.3.0 // indirect
+	github.com/ipfs/go-ipld-legacy v0.1.0 // indirect
+	github.com/ipfs/go-libipfs v0.1.0 // indirect
 	github.com/ipfs/go-log/v2 v2.5.1 // indirect
+	github.com/ipfs/go-merkledag v0.6.0 // indirect
+	github.com/ipfs/go-metrics-interface v0.0.1 // indirect
+	github.com/ipfs/go-verifcid v0.0.1 // indirect
+	github.com/ipld/go-codec-dagpb v1.3.0 // indirect
 	github.com/ipld/go-ipld-prime v0.20.0 // indirect
 	github.com/jackpal/go-nat-pmp v1.0.2 // indirect
 	github.com/jbenet/go-temp-err-catcher v0.1.0 // indirect
@@ -103,6 +117,7 @@ require (
 	github.com/quic-go/webtransport-go v0.5.1 // indirect
 	github.com/raulk/go-watchdog v1.3.0 // indirect
 	github.com/spaolacci/murmur3 v1.1.0 // indirect
+	github.com/whyrusleeping/cbor-gen v0.0.0-20200123233031-1cdf64d27158 // indirect
 	github.com/whyrusleeping/go-keyspace v0.0.0-20160322163242-5b898ac5add1 // indirect
 	go.opencensus.io v0.24.0 // indirect
 	go.uber.org/atomic v1.10.0 // indirect
@@ -118,6 +133,7 @@ require (
 	golang.org/x/sys v0.5.0 // indirect
 	golang.org/x/text v0.7.0 // indirect
 	golang.org/x/tools v0.6.0 // indirect
+	golang.org/x/xerrors v0.0.0-20200804184101-5ec99f83aff1 // indirect
 	google.golang.org/protobuf v1.28.1 // indirect
 	lukechampine.com/blake3 v1.1.7 // indirect
 	nhooyr.io/websocket v1.8.7 // indirect
