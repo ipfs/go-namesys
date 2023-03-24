@@ -80,6 +80,15 @@ func WithDNSResolver(rslv madns.BasicResolver) Option {
 	}
 }
 
+// WithIPNSResolver is an option that supplies a custom IPNS resolver to use
+// instead of the system default.
+func WithIPNSResolver(rslv resolver) Option {
+	return func(ns *mpns) error {
+		ns.ipnsResolver = rslv
+		return nil
+	}
+}
+
 // WithDatastore is an option that supplies a datastore to use instead of an in-memory map datastore. The datastore is used to store published IPNS records and make them available for querying.
 func WithDatastore(ds ds.Datastore) Option {
 	return func(ns *mpns) error {
@@ -141,7 +150,9 @@ func NewNameSystem(r routing.ValueStore, opts ...Option) (NameSystem, error) {
 		ns.dnsResolver = NewDNSResolver(madns.DefaultResolver.LookupTXT)
 	}
 
-	ns.ipnsResolver = NewIpnsResolver(r)
+	if ns.ipnsResolver == nil {
+		ns.ipnsResolver = NewIpnsResolver(r)
+	}
 	ns.ipnsPublisher = NewIpnsPublisher(r, ns.ds)
 
 	return ns, nil
