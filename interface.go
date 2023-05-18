@@ -26,8 +26,7 @@ For command-line bindings to this functionality, see:
 	ipfs name
 	ipfs dns
 	ipfs resolve
-*/
-package namesys
+*/package namesys
 
 import (
 	"errors"
@@ -40,13 +39,19 @@ import (
 )
 
 // ErrResolveFailed signals an error when attempting to resolve.
+//
+// Deprecated: use github.com/ipfs/boxo/namesys.ErrResolveFailed
 var ErrResolveFailed = errors.New("could not resolve name")
 
 // ErrResolveRecursion signals a recursion-depth limit.
+//
+// Deprecated: use github.com/ipfs/boxo/namesys.ErrResolveRecursion
 var ErrResolveRecursion = errors.New(
 	"could not resolve name (recursion limit exceeded)")
 
 // ErrPublishFailed signals an error when attempting to publish.
+//
+// Deprecated: use github.com/ipfs/boxo/namesys.ErrPublishFailed
 var ErrPublishFailed = errors.New("could not publish name")
 
 // NameSystem represents a cohesive name publishing and resolving system.
@@ -56,18 +61,24 @@ var ErrPublishFailed = errors.New("could not publish name")
 //
 // Resolving a name is the process of looking up the value associated with the
 // key (name).
+//
+// Deprecated: use github.com/ipfs/boxo/namesys.NameSystem
 type NameSystem interface {
 	Resolver
 	Publisher
 }
 
 // Result is the return type for Resolver.ResolveAsync.
+//
+// Deprecated: use github.com/ipfs/boxo/namesys.Result
 type Result struct {
 	Path path.Path
 	Err  error
 }
 
 // Resolver is an object capable of resolving names.
+//
+// Deprecated: use github.com/ipfs/boxo/namesys.Resolver
 type Resolver interface {
 
 	// Resolve performs a recursive lookup, returning the dereferenced
@@ -93,6 +104,8 @@ type Resolver interface {
 }
 
 // Publisher is an object capable of publishing particular names.
+//
+// Deprecated: use github.com/ipfs/boxo/namesys.Publisher
 type Publisher interface {
 	// Publish establishes a name-value mapping.
 	// TODO make this not PrivKey specific.

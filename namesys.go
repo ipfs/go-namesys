@@ -52,9 +52,12 @@ type mpns struct {
 	cache     *lru.Cache
 }
 
+// Deprecated: use github.com/ipfs/boxo/namesys.Option
 type Option func(*mpns) error
 
 // WithCache is an option that instructs the name system to use a (LRU) cache of the given size.
+//
+// Deprecated: use github.com/ipfs/boxo/namesys.WithCache
 func WithCache(size int) Option {
 	return func(ns *mpns) error {
 		if size <= 0 {
@@ -73,6 +76,8 @@ func WithCache(size int) Option {
 
 // WithDNSResolver is an option that supplies a custom DNS resolver to use instead of the system
 // default.
+//
+// Deprecated: use github.com/ipfs/boxo/namesys.WithDNSResolver
 func WithDNSResolver(rslv madns.BasicResolver) Option {
 	return func(ns *mpns) error {
 		ns.dnsResolver = NewDNSResolver(rslv.LookupTXT)
@@ -81,6 +86,8 @@ func WithDNSResolver(rslv madns.BasicResolver) Option {
 }
 
 // WithDatastore is an option that supplies a datastore to use instead of an in-memory map datastore. The datastore is used to store published IPNS records and make them available for querying.
+//
+// Deprecated: use github.com/ipfs/boxo/namesys.WithDatastore
 func WithDatastore(ds ds.Datastore) Option {
 	return func(ns *mpns) error {
 		ns.ds = ds
@@ -106,6 +113,8 @@ func loadStaticMap(list string) (map[string]path.Path, error) {
 }
 
 // NewNameSystem will construct the IPFS naming system based on Routing
+//
+// Deprecated: use github.com/ipfs/boxo/namesys.NewNameSystem
 func NewNameSystem(r routing.ValueStore, opts ...Option) (NameSystem, error) {
 	var staticMap map[string]path.Path
 
@@ -148,6 +157,8 @@ func NewNameSystem(r routing.ValueStore, opts ...Option) (NameSystem, error) {
 }
 
 // DefaultResolverCacheTTL defines max ttl of a record placed in namesys cache.
+//
+// Deprecated: use github.com/ipfs/boxo/namesys.DefaultResolverCacheTTL
 const DefaultResolverCacheTTL = time.Minute
 
 // Resolve implements Resolver.

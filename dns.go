@@ -16,9 +16,13 @@ import (
 )
 
 // LookupTXTFunc is a function that lookups TXT record values.
+//
+// Deprecated: use github.com/ipfs/boxo/namesys.LookupTXTFunc
 type LookupTXTFunc func(ctx context.Context, name string) (txt []string, err error)
 
 // DNSResolver implements a Resolver on DNS domains
+//
+// Deprecated: use github.com/ipfs/boxo/namesys.DNSResolver
 type DNSResolver struct {
 	lookupTXT LookupTXTFunc
 	// TODO: maybe some sort of caching?
@@ -26,6 +30,8 @@ type DNSResolver struct {
 }
 
 // NewDNSResolver constructs a name resolver using DNS TXT records.
+//
+// Deprecated: use github.com/ipfs/boxo/namesys.NewDNSResolver
 func NewDNSResolver(lookup LookupTXTFunc) *DNSResolver {
 	return &DNSResolver{lookupTXT: lookup}
 }

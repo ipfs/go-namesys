@@ -15,10 +15,14 @@ import (
 
 // ErrNoNamesys is an explicit error for when an IPFS node doesn't
 // (yet) have a name system
+//
+// Deprecated: use github.com/ipfs/boxo/namesys/resolve.ErrNoNamesys
 var ErrNoNamesys = errors.New(
 	"core/resolve: no Namesys on IpfsNode - can't resolve ipns entry")
 
 // ResolveIPNS resolves /ipns paths
+//
+// Deprecated: use github.com/ipfs/boxo/namesys/resolve.ResolveIPNS
 func ResolveIPNS(ctx context.Context, nsys namesys.NameSystem, p path.Path) (path.Path, error) {
 	ctx, span := namesys.StartSpan(ctx, "ResolveIPNS", trace.WithAttributes(attribute.String("Path", p.String())))
 	defer span.End()
