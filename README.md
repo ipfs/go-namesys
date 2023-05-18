@@ -1,12 +1,22 @@
 # go-namesys
 
+> go-namesys provides publish and resolution support for the /ipns/ namespace 
+
 [![](https://img.shields.io/badge/made%20by-Protocol%20Labs-blue.svg?style=flat-square)](http://protocol.ai)
 [![](https://img.shields.io/badge/project-IPFS-blue.svg?style=flat-square)](http://ipfs.io/)
 [![Go Reference](https://pkg.go.dev/badge/github.com/ipfs/go-namesys.svg)](https://pkg.go.dev/github.com/ipfs/go-namesys)
 [![Travis CI](https://travis-ci.com/ipfs/go-namesys.svg?branch=master)](https://travis-ci.com/ipfs/go-namesys)
 
+## ❗ This repo is no longer maintained.
 
-> go-namesys provides publish and resolution support for the /ipns/ namespace 
+👉 We highly recommend switching to the maintained version at https://github.com/ipfs/boxo/tree/main/namesys.
+🏎️ Good news!  There is [tooling and documentation](https://github.com/ipfs/boxo#migrating-to-boxo) to expedite a switch in your repo. 
+
+⚠️ If you continue using this repo, please note that security fixes will not be provided (unless someone steps in to maintain it).
+
+📚 Learn more, including how to take the maintainership mantle or ask questions, [here](https://github.com/ipfs/boxo/wiki/Copied-or-Migrated-Repos-FAQ).
+
+## Summary
 
 Package namesys defines `Resolver` and `Publisher` interfaces for IPNS paths, that is, paths in the form of `/ipns/<name_to_be_resolved>`. A "resolved" IPNS path becomes an `/ipfs/<cid>` path.
 

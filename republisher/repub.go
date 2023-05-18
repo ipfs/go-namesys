@@ -29,19 +29,29 @@ var errNoEntry = errors.New("no previous entry")
 var log = logging.Logger("ipns-repub")
 
 // DefaultRebroadcastInterval is the default interval at which we rebroadcast IPNS records
+//
+// Deprecated: use github.com/ipfs/boxo/namesys/republisher.DefaultRebroadcastInterval
 var DefaultRebroadcastInterval = time.Hour * 4
 
 // InitialRebroadcastDelay is the delay before first broadcasting IPNS records on start
+//
+// Deprecated: use github.com/ipfs/boxo/namesys/republisher.InitialRebroadcastDelay
 var InitialRebroadcastDelay = time.Minute * 1
 
 // FailureRetryInterval is the interval at which we retry IPNS records broadcasts (when they fail)
+//
+// Deprecated: use github.com/ipfs/boxo/namesys/republisher.FailureRetryInterval
 var FailureRetryInterval = time.Minute * 5
 
 // DefaultRecordLifetime is the default lifetime for IPNS records
+//
+// Deprecated: use github.com/ipfs/boxo/namesys/republisher.DefaultRecordLifetime
 const DefaultRecordLifetime = time.Hour * 24
 
 // Republisher facilitates the regular publishing of all the IPNS records
 // associated to keys in a Keystore.
+//
+// Deprecated: use github.com/ipfs/boxo/namesys/republisher.Republisher
 type Republisher struct {
 	ns   namesys.Publisher
 	ds   ds.Datastore
@@ -55,6 +65,8 @@ type Republisher struct {
 }
 
 // NewRepublisher creates a new Republisher
+//
+// Deprecated: use github.com/ipfs/boxo/namesys/republisher.NewRepublisher
 func NewRepublisher(ns namesys.Publisher, ds ds.Datastore, self ic.PrivKey, ks keystore.Keystore) *Republisher {
 	return &Republisher{
 		ns:             ns,

@@ -25,6 +25,8 @@ const ipnsPrefix = "/ipns/"
 
 // IpnsPublisher is capable of publishing and resolving names to the IPFS
 // routing system.
+//
+// Deprecated: use github.com/ipfs/boxo/namesys.IpnsPublisher
 type IpnsPublisher struct {
 	routing routing.ValueStore
 	ds      ds.Datastore
@@ -34,6 +36,8 @@ type IpnsPublisher struct {
 }
 
 // NewIpnsPublisher constructs a publisher for the IPFS Routing name system.
+//
+// Deprecated: use github.com/ipfs/boxo/namesys.NewIpnsPublisher
 func NewIpnsPublisher(route routing.ValueStore, ds ds.Datastore) *IpnsPublisher {
 	if ds == nil {
 		panic("nil datastore")
@@ -59,6 +63,8 @@ func (p *IpnsPublisher) Publish(ctx context.Context, k crypto.PrivKey, value pat
 
 // IpnsDsKey returns a datastore key given an IPNS identifier (peer
 // ID). Defines the storage key for IPNS records in the local datastore.
+//
+// Deprecated: use github.com/ipfs/boxo/namesys.IpnsDsKey
 func IpnsDsKey(id peer.ID) ds.Key {
 	return ds.NewKey("/ipns/" + base32.RawStdEncoding.EncodeToString([]byte(id)))
 }
@@ -196,6 +202,8 @@ func (p *IpnsPublisher) updateRecord(ctx context.Context, k crypto.PrivKey, valu
 // PutRecordToRouting publishes the given entry using the provided ValueStore,
 // keyed on the ID associated with the provided public key. The public key is
 // also made available to the routing system so that entries can be verified.
+//
+// Deprecated: use github.com/ipfs/boxo/namesys.PutRecordToRouting
 func PutRecordToRouting(ctx context.Context, r routing.ValueStore, k crypto.PubKey, entry *pb.IpnsEntry) error {
 	ctx, span := StartSpan(ctx, "PutRecordToRouting")
 	defer span.End()
@@ -249,6 +257,8 @@ func waitOnErrChan(ctx context.Context, errs chan error) error {
 
 // PublishPublicKey stores the given public key in the ValueStore with the
 // given key.
+//
+// Deprecated: use github.com/ipfs/boxo/namesys.PublishPublicKey
 func PublishPublicKey(ctx context.Context, r routing.ValueStore, k string, pubk crypto.PubKey) error {
 	ctx, span := StartSpan(ctx, "PublishPublicKey", trace.WithAttributes(attribute.String("Key", k)))
 	defer span.End()
@@ -265,6 +275,8 @@ func PublishPublicKey(ctx context.Context, r routing.ValueStore, k string, pubk 
 
 // PublishEntry stores the given IpnsEntry in the ValueStore with the given
 // ipnskey.
+//
+// Deprecated: use github.com/ipfs/boxo/namesys.PublishEntry
 func PublishEntry(ctx context.Context, r routing.ValueStore, ipnskey string, rec *pb.IpnsEntry) error {
 	ctx, span := StartSpan(ctx, "PublishEntry", trace.WithAttributes(attribute.String("IPNSKey", ipnskey)))
 	defer span.End()
@@ -280,6 +292,8 @@ func PublishEntry(ctx context.Context, r routing.ValueStore, ipnskey string, rec
 }
 
 // PkKeyForID returns the public key routing key for the given peer ID.
+//
+// Deprecated: use github.com/ipfs/boxo/namesys.PkKeyForID
 func PkKeyForID(id peer.ID) string {
 	return "/pk/" + string(id)
 }

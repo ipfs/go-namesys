@@ -23,12 +23,16 @@ import (
 var log = logging.Logger("namesys")
 
 // IpnsResolver implements NSResolver for the main IPFS SFS-like naming
+//
+// Deprecated: use github.com/ipfs/boxo/namesys.IpnsResolver
 type IpnsResolver struct {
 	routing routing.ValueStore
 }
 
 // NewIpnsResolver constructs a name resolver using the IPFS Routing system
 // to implement SFS-like naming on top.
+//
+// Deprecated: use github.com/ipfs/boxo/namesys.NewIpnsResolver
 func NewIpnsResolver(route routing.ValueStore) *IpnsResolver {
 	if route == nil {
 		panic("attempt to create resolver with nil routing system")
