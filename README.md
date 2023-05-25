@@ -30,7 +30,6 @@ The package provides implementations for all three resolvers.
 
 - [Install](#install)
 - [Usage](#usage)
-- [Contribute](#contribute)
 - [License](#license)
 
 ## Install
@@ -46,12 +45,6 @@ import "github.com/ipfs/go-namesys"
 ```
 
 See the [Pkg.go.dev documentation](https://pkg.go.dev/github.com/ipfs/go-namesys)
-
-## Contribute
-
-PRs accepted.
-
-Small note: If editing the README, please conform to the [standard-readme](https://github.com/RichardLitt/standard-readme) specification.
 
 ## License
 
